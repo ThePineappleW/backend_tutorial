@@ -96,6 +96,17 @@ countryRoute.put(function(req, res) {
   });
 });
 
+// Create endpoint /api/countries/:country_id for DELETE
+countryRoute.delete(function(req, res) {
+  // Use the Country model to find a specific country and remove it
+  Country.findByIdAndRemove(req.params.country_id, function(err) {
+    if (err)
+      res.send(err);
+
+    res.json({ message: 'Country removed from the database!' });
+  });
+});
+
 // Register all our routes with /api
 app.use('/api', router);
 
