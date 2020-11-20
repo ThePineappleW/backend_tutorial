@@ -28,10 +28,10 @@ router.get('/', function(req, res) {
 });
 
 // Create a new route with the prefix /countries
-var countriesRoutee = router.route('/countries');
+var countriesRoute = router.route('/countries');
 
 // Create endpoint /api/countries for POSTS
-countriesRoutee.post(function(req, res) {
+countriesRoute.post(function(req, res) {
   // Create a new instance of the Country model
   var country = new Country();
 
