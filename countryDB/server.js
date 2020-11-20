@@ -52,7 +52,7 @@ countriesRoutee.post(function(req, res) {
 });
 
 // Create endpoint /api/countries for GET
-countriesRoutee.get(function(req, res) {
+countriesRoute.get(function(req, res) {
   // Use the Country model to find all country
   Country.find(function(err, countries) {
     if (err)
@@ -73,6 +73,26 @@ countryRoute.get(function(req, res) {
       res.send(err);
 
     res.json(country);
+  });
+});
+
+// Create endpoint /api/countries/:country_id for PUT
+countryRoute.put(function(req, res) {
+  // Use the Country model to find a specific country
+  Country.findById(req.params.country_id, function(err, country) {
+    if (err)
+      res.send(err);
+
+    // Update the existing country quantity
+    country.quantity = req.body.quantity;
+
+    // Save the country and check for errors
+    country.save(function(err) {
+      if (err)
+        res.send(err);
+
+      res.json(country);
+    });
   });
 });
 
