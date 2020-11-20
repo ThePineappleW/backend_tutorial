@@ -2,7 +2,7 @@
 var mongoose = require('mongoose');
 
 // Define our beer schema
-var CountrySchema   = new mongoose.Schema({
+var CountrySchema = new mongoose.Schema({
   name: String,
   capital: String,
   continent: String,

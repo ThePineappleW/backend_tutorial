@@ -37,11 +37,25 @@ countriesRoute.post(function(req, res) {
 
   // Set the country properties that came from the POST data
   country.name = req.body.name;
-  country.capital = req.body.capital;
-  country.continent = req.body.continent;
-  country.hdi = req.body.hdi;
 
+  console.log(country.name);
+  console.log(req.body.name);
   
+  country.capital = req.body.capital;
+  
+  console.log(country.capital);
+  console.log(req.body.capital);
+  
+  country.continent = req.body.continent;
+  
+  console.log(country.continent);
+  console.log(req.body.continent);
+
+  country.hdi = req.body.hdi;
+  
+  console.log(country.hdi);
+  console.log(req.body.hdi);
+
   // Save the country and check for errors
   country.save(function(err) {
     if (err)
@@ -83,8 +97,8 @@ countryRoute.put(function(req, res) {
     if (err)
       res.send(err);
 
-    // Update the existing country quantity
-    country.quantity = req.body.quantity;
+    // Update the existing country capital
+    country.capital = req.body.capital;
 
     // Save the country and check for errors
     country.save(function(err) {
