@@ -35,7 +35,7 @@ countriesRoutee.post(function(req, res) {
   // Create a new instance of the Country model
   var country = new Country();
 
-  // Set the beer properties that came from the POST data
+  // Set the country properties that came from the POST data
   country.name = req.body.name;
   country.capital = req.body.capital;
   country.continent = req.body.continent;
@@ -68,7 +68,7 @@ var countryRoute = router.route('/countries/:country_id');
 // Create endpoint /api/countries/:country_id for GET
 countryRoute.get(function(req, res) {
   // Use the Country model to find a specific country
-  Country.findById(req.params.beer_id, function(err, country) {
+  Country.findById(req.params.country_id, function(err, country) {
     if (err)
       res.send(err);
 
