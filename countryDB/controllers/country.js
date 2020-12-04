@@ -8,8 +8,9 @@ exports.postCountries = function(req, res) {
 
   // Set the country properties that came from the POST data
   country.name = req.body.name;
-  country.type = req.body.type;
-  country.quantity = req.body.quantity;
+  country.capital = req.body.capital;
+  country.continent = req.body.continent;
+  country.hdi = req.body.hdi;
 
   // Save the country and check for errors
   country.save(function(err) {
