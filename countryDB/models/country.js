@@ -6,8 +6,8 @@ var CountrySchema   = new mongoose.Schema({
   name: String,
   capital: String,
   continent: String,
-  hdi: Number
-
+  hdi: Number,
+  userId: String
 });
 
 // Export the Mongoose model

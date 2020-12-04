@@ -11,6 +11,7 @@ exports.postCountries = function(req, res) {
   country.capital = req.body.capital;
   country.continent = req.body.continent;
   country.hdi = req.body.hdi;
+  country.userId = req.user._id;
 
   // Save the country and check for errors
   country.save(function(err) {
@@ -24,7 +25,7 @@ exports.postCountries = function(req, res) {
 // Create endpoint /api/countries for GET
 exports.getCountries = function(req, res) {
   // Use the Country model to find all countries
-  Country.find(function(err, countries) {
+  Country.find({ userId: req.user._id }, function(err, countries) {
     if (err)
       return res.send(err);
 
@@ -35,7 +36,7 @@ exports.getCountries = function(req, res) {
 // Create endpoint /api/countries/:country_id for GET
 exports.getCountry = function(req, res) {
   // Use the Country model to find a specific country
-  Country.findById(req.params.country_id, function(err, country) {
+  Country.find({ userId: req.user._id, _id: req.params.beer_id }, function(err, country) {
     if (err)
       return res.send(err);
 
@@ -46,27 +47,18 @@ exports.getCountry = function(req, res) {
 // Create endpoint /api/countries/:country_id for PUT
 exports.putCountry = function(req, res) {
   // Use the Country model to find a specific country
-  Country.findById(req.params.country_id, function(err, country) {
+  Country.update({ userId: req.user._id, _id: req.params.beer_id }, { hdi: req.body.hdi }, function(err, num, raw) {
     if (err)
       return res.send(err);
-
-    // Update the existing country quantity
-    country.quantity = req.body.quantity;
-
-    // Save the country and check for errors
-    country.save(function(err) {
-      if (err)
-        return res.send(err);
-
-      res.json(country);
-    });
+    
+    res.json({ message: num + ' updated' });
   });
 };
 
 // Create endpoint /api/countries/:country_id for DELETE
 exports.deleteCountry = function(req, res) {
   // Use the Country model to find a specific country and remove it
-  Country.findByIdAndRemove(req.params.country_id, function(err) {
+  Country.remove({ userId: req.user._id, _id: req.params.beer_id }, function(err) {
     if (err)
       return res.send(err);
 
