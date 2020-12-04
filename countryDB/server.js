@@ -2,7 +2,10 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
-var Country = require('./models/country');
+var countryController = require('./controllers/country');
+var userController = require('./controllers/user');
+var passport = require('passport');
+var authController = require('./controllers/auth');
 
 //Connect to the relevant MongoDB
 mongoose.connect('mongodb://localhost:27017/countries');
@@ -15,101 +18,30 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-// Use environment defined port or 3000
-var port = process.env.PORT || 3000;
+// Use the passport package in our application
+app.use(passport.initialize());
 
 // Create our Express router
 var router = express.Router();
 
-// Initial dummy route for testing
-// http://localhost:3000/api
-router.get('/', function(req, res) {
-  res.json({ message: 'Please enter more countries!' });
-});
+// Create endpoint handlers for /countries
+router.route('/countries')
+  .post(authController.isAuthenticated, countryController.postCountries)
+  .get(authController.isAuthenticated, countryController.getCountries);
 
-// Create a new route with the prefix /countries
-var countriesRoute = router.route('/countries');
+// Create endpoint handlers for /countries/:country_id
+router.route('/countries/:country_id')
+  .get(authController.isAuthenticated, countryController.getCountry)
+  .put(authController.isAuthenticated, countryController.putCountry)
+  .delete(authController.isAuthenticated, countryController.deleteCountry);
 
-// Create endpoint /api/countries for POSTS
-countriesRoute.post(function(req, res) {
-  // Create a new instance of the Country model
-  var country = new Country();
-
-  // Set the country properties that came from the POST data
-  country.name = req.body.name;
-  country.capital = req.body.capital;  
-  country.continent = req.body.continent;
-  country.hdi = req.body.hdi;
-  
-  // Save the country and check for errors
-  country.save(function(err) {
-    if (err)
-      res.send(err);
-
-    res.json({ message: 'Country entered into database!', data: country });
-  });
-});
-
-// Create endpoint /api/countries for GET
-countriesRoute.get(function(req, res) {
-  // Use the Country model to find all country
-  Country.find(function(err, countries) {
-    if (err)
-      res.send(err);
-
-    res.json(countries);
-  });
-});
-
-// Create a new route with the /countries/:country_id prefix
-var countryRoute = router.route('/countries/:country_id');
-
-// Create endpoint /api/countries/:country_id for GET
-countryRoute.get(function(req, res) {
-  // Use the Country model to find a specific country
-  Country.findById(req.params.country_id, function(err, country) {
-    if (err)
-      res.send(err);
-
-    res.json(country);
-  });
-});
-
-// Create endpoint /api/countries/:country_id for PUT
-countryRoute.put(function(req, res) {
-  // Use the Country model to find a specific country
-  Country.findById(req.params.country_id, function(err, country) {
-    if (err)
-      res.send(err);
-
-    // Update the existing country capital
-    country.capital = req.body.capital;
-
-    // Save the country and check for errors
-    country.save(function(err) {
-      if (err)
-        res.send(err);
-
-      res.json(country);
-    });
-  });
-});
-
-// Create endpoint /api/countries/:country_id for DELETE
-countryRoute.delete(function(req, res) {
-  // Use the Country model to find a specific country and remove it
-  Country.findByIdAndRemove(req.params.country_id, function(err) {
-    if (err)
-      res.send(err);
-
-    res.json({ message: 'Country removed from the database!' });
-  });
-});
+// Create endpoint handlers for /users
+router.route('/users')
+  .post(userController.postUsers)
+  .get(authController.isAuthenticated, userController.getUsers);
 
 // Register all our routes with /api
 app.use('/api', router);
 
 // Start the server
-app.listen(port);
-console.log('Server running on port ' + port);
-//test
+app.listen(3000);
