@@ -32,7 +32,7 @@ router.route('/countries')
 // Create endpoint handlers for /countries/:country_id
 router.route('/countries/:country_id')
   .get(authController.isAuthenticated, countryController.getCountry)
-  .putauthController.isAuthenticated, (countryController.putCountry)
+  .put(authController.isAuthenticated, countryController.putCountry)
   .delete(authController.isAuthenticated, countryController.deleteCountry);
 
 // Create endpoint handlers for /users
