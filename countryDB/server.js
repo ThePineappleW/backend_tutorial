@@ -3,6 +3,7 @@ var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var countryController = require('./controllers/country');
+var userController = require('./controllers/user');
 
 //Connect to the relevant MongoDB
 mongoose.connect('mongodb://localhost:27017/countries');
@@ -29,6 +30,11 @@ router.route('/countries/:country_id')
   .put(countryController.putCountry)
   .delete(countryController.deleteCountry);
 
+// Create endpoint handlers for /users
+router.route('/users')
+  .post(userController.postUsers)
+  .get(userController.getUsers);
+  
 // Register all our routes with /api
 app.use('/api', router);
 
