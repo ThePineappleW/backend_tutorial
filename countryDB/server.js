@@ -26,8 +26,8 @@ var router = express.Router();
 
 // Create endpoint handlers for /countries
 router.route('/countries')
-  .post(authController.isAuthenticated, countryController.postCountries)
-  .get(authController.isAuthenticated, countryController.getCountries);
+  .post(/**authController.isAuthenticated, **/countryController.postCountries)
+  .get(/**authController.isAuthenticated, **/countryController.getCountries);
 
 // Create endpoint handlers for /countries/:country_id
 router.route('/countries/:country_id')

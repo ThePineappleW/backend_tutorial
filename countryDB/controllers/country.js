@@ -18,12 +18,20 @@ exports.postCountries = function(req, res) {
     if (err)
       return res.send(err);
 
-    res.json({ message: 'Country added to database.', data: country });
+     //Allow CORS
+     res.header("Access-Control-Allow-Origin", "*");
+     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    
+      res.json({ message: 'Country added to database.', data: country });
   });
 };
 
 // Create endpoint /api/countries for GET
 exports.getCountries = function(req, res) {
+ //Allow CORS
+ res.header("Access-Control-Allow-Origin", "*");
+ res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+ 
   // Use the Country model to find all countries
   Country.find({ userId: req.user._id }, function(err, countries) {
     if (err)
